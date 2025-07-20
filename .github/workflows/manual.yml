@@ -1,0 +1,31 @@
+name: Run greeting workflow manually
+
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        description: "Name of the person to greet"
+        required: true
+        type: string
+      greeting:
+        description: "The message description"
+        required: true
+        type: string
+      data:
+        description: "The data(actual message)"
+        required: false
+        type: string
+jobs:
+  greet:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Decode File Content
+        run: |
+          echo "${{inputs.data}}" | base64 --decode > ./decoded_file.txt
+      - name: Display Greeting
+        run: |
+          echo "${{inputs.greeting}}, ${{inputs.name}}"
+      - name: Display the decoded file content
+        run: |
+          echo "Content of the file"
+          cat ./decoded_file.txt
