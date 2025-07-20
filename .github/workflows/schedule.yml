@@ -1,0 +1,11 @@
+name: Cron-print-every-2min
+on:
+  schedule:
+    - cron: '*/2 * * * *'
+
+jobs:
+  test_schedule:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo the server time Every 2 minutes
+        run: echo "The server time is $(date)"
