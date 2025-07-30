@@ -1,0 +1,52 @@
+  name: Functions and expressions
+
+  on:
+    push:
+      branches:
+        - main
+    issues:
+      types: [opened, labeled]
+
+  jobs:
+    expression-functions:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Check that string contains substring
+          if: contains('Ousmane Sylla', 'Sylla')
+          run: echo "Sylla is in Ousmane SYLLA"
+        - name: check if string starts with Ousmane
+          if: startsWith('Ousmane SYLLA', 'Ou')
+          run: echo "The string starts with 'Ou'"
+
+        - name: Check if ends if
+          if: endsWith('Ousmane SYLLA', 'LA')
+          run: echo "The string ends with 'LA'"
+
+        - name: Format and Echo string
+          run: echo ${{ format('Je suis {0} {1} {2}', 'SYLLA', 'Ousmane', 'de BEEKARANTA') }}
+
+        - name: Join issue labels
+          if: github.event_name == 'issues'
+          run: |
+            echo "Issue labels: ${{ join(github.event.issue.labels.*.name, ', ') }}"
+
+        - name: Convert job context to JSON
+          run: |
+            echo "Job context in JSON: ${{toJSON(github.job)}}"
+
+        - name: Parse JSON string
+          run: |
+            echo "Parsed JSON: ${{ fromJSON('{"hello": "world"}').hello }}"
+
+        - name: Hash files
+          run: |
+            echo "hash of files: ${{ hashFiles('**/package-lock.json', '**/Genfile.lock') }}"
+
+        - name: The job has succeeded
+          if: ${{ success() }}
+          run: echo "The job has succeeded"
+
+        - name: The job has failed
+          if: ${{ failure() }}
+          run: echo "The job has failed"
+			
